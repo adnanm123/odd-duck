@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f1f1f1;
+  color: #333333;
+}
+
+h1 {
+  font-size: 3rem;
+  color: #ff6600;
+  line-height: 1.2;
+  margin: 2rem 0 1rem;
+}
+
+main {
+  max-width: 1024px;
+  margin: 3rem auto;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: 6.5rem 10rem 1fr;
+  gap: 2rem;
+  background-color: orange;
+}
+
+#siteLogo {
+  width: 150px;
+  z-index: 2;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+
+section {
+  background-color: rgba(200, 200, 200, 0.3);
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+section img {
+  width: 30%;
+  height: 10rem;
+  border: 5px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+section img:hover {
+  border-color: #ff6600;
+  cursor: pointer;
+}
+
+ul {
+  margin: 1rem;
+}
+
+section + div {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  margin: 1rem;
+  cursor: pointer;
+}
+
+section + div.clicks-allowed {
+  background-color: #ff6600;
+}
