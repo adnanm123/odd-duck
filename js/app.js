@@ -8,10 +8,10 @@ let middleImage = document.getElementById('product2');
 let rightImage = document.getElementById('product3');
 let button = document.getElementById('results-button');
 let resultsContainer = document.getElementById('results-container');
+// let Chart = document.getElementById('myChart');
+let previousIndexes = [];
 
-
-
-let maxNumberOfRounds = 5;
+let maxNumberOfRounds = 25;
 let currentRoundNumber = 0;
 let productArr = [];
 
@@ -24,64 +24,117 @@ function Product(name, fileExtension = 'jpg') {
   this.votes = 0;
 }
 
-
 // Global Funtion
 
 function selectRandomProduct() {
   // generate a 3 unique product images
-  return Math.floor(Math.random() * productArr.length);
+  const indexes = new Set();
+  while(indexes.size < 3 ) {
+    const randomIndex =  Math.floor(Math.random() * productArr.length);
+    if(!indexes.has(randomIndex) && !previousIndexes.includes(randomIndex)) {
+      indexes.add(randomIndex);
+    }
+  }
+  const uniqueIndexes = Array.from(indexes);
+  previousIndexes = uniqueIndexes;
+  const[leftIndex, middleIndex, rightIndex] = uniqueIndexes;
+  renderProducts(leftIndex, middleIndex, rightIndex);
+  console.log(uniqueIndexes);
 }
 
-function renderProducts() {
-  let product1 = selectRandomProduct();
-  let product2 = selectRandomProduct();
-  let product3 = selectRandomProduct();
-
-  while (product1 === product2 || product1 === product3 || product2 === product3) {
-    product2 = selectRandomProduct();
-    product3 = selectRandomProduct();
-  }
-
-  leftImage.name = productArr[product1].name;
-  middleImage.name = productArr[product2].name;
-  rightImage.name = productArr[product3].name;
-  leftImage.src = productArr[product1].fileExtension;
-  middleImage.src = productArr[product2].fileExtension;
-  rightImage.src = productArr[product3].fileExtension;
-  productArr[product1].timesShown++;
-  productArr[product2].timesShown++;
-  productArr[product2].timesShown++;
-  console.log(product1);
+function renderProducts(left, middle, right) {
+  leftImage.alt = productArr[left].name;
+  middleImage.alt = productArr[middle].name;
+  rightImage.alt = productArr[right].name;
+  leftImage.src = productArr[left].fileExtension;
+  middleImage.src = productArr[middle].fileExtension;
+  rightImage.src = productArr[right].fileExtension;
+  productArr[left].timesShown++;
+  productArr[middle].timesShown++;
+  productArr[right].timesShown++;
+  console.log();
 }
 function handleProductClick(event) {
+  console.log('click');
   currentRoundNumber++;
   let clickedProduct = event.target.alt;
+  console.log(clickedProduct);
   for (let i = 0; i < productArr.length; i++) {
     if (clickedProduct === productArr[i].name) {
+      console.log('match');
       productArr[i].votes++;
       break;
     }
   }
 
   if (maxNumberOfRounds === currentRoundNumber) {
-    // end game
     productSelection.removeEventListener('click', handleProductClick);
     button.addEventListener('click', renderResults);
     button.className = 'clicks-allowed';
   } else {
-    renderProducts();
+    selectRandomProduct();
   }
 }
 
 function renderResults() {
-  resultsContainer.innerHTML = '';
+  renderList();
+  renderChart();
+}
 
+function renderList() {
+  resultsContainer.innerHTML = '';
   for (let i = 0; i < productArr.length; i++) {
-    let resultItem = document.createElement('div');
-    resultItem.textContent = `${productArr[i].name} had ${productArr[i].votes} votes and was seen ${productArr[i].timesShown} times.`;
+    let resultItem = document.createElement('ul');
+    resultItem.textContent = `${productArr[i].name}: Had ${productArr[i].votes} votes and was seen ${productArr[i].timesShown} times.`;
     resultsContainer.appendChild(resultItem);
   }
 }
+
+function renderChart() {
+  let productNames = [];
+  let productTimesShown = [];
+  let productVotes = [];
+
+  for (let i = 0; i < productArr.length; i++) {
+    productNames.push(productArr[i].name);
+    productTimesShown.push(productArr[i].votes);
+    productVotes.push(productArr[i].timesShown);
+  }
+  console.log(productNames);
+  const ctx = document.getElementById('myChart');
+  const config = {
+    type: 'bar',
+    data: {
+      labels: productNames,
+      datasets: [
+        {
+          label: '# of TimesShown',
+          data: productTimesShown,
+          borderWidth: 1,
+          backgroundColor: 'orange',
+          borderColor: 'orange'
+        },
+        {
+          label: '# of Votes',
+          data: productVotes,
+          borderWidth: 1,
+          backgroundColor: 'blue',
+          borderColor: 'blue'
+        },
+      ]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  };
+
+  new Chart(ctx, config);
+}
+
 
 // EXECUTABLE CODE
 
@@ -126,6 +179,6 @@ productArr.push(bag,
   wineGlass);
 console.log(productArr);
 
-renderProducts();
+selectRandomProduct();
 
 productSelection.addEventListener('click', handleProductClick);

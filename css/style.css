@@ -6,6 +6,7 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f1f1f1;
   color: #333333;
+  background-color: beige;
 }
 
 h1 {
@@ -22,11 +23,11 @@ main {
   grid-template-columns: 200px 1fr;
   grid-template-rows: 6.5rem 10rem 1fr;
   gap: 2rem;
-  background-color: orange;
+  background-color: lightblue;
 }
 
 #siteLogo {
-  width: 150px;
+  width: 100px;
   z-index: 2;
   grid-column-start: 1;
   grid-column-end: 2;
@@ -58,15 +59,19 @@ ul {
   margin: 1rem;
 }
 
-section + div {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #ffffff;
+#results-button {
+  background-color: white;
+  color: black;
   padding: 0.5rem 1rem;
   font-size: 0.8rem;
   margin: 1rem;
   cursor: pointer;
 }
 
-section + div.clicks-allowed {
-  background-color: #ff6600;
+#results-button.clicks-allowed {
+  background-color: gray;
+  cursor: pointer;
+}
+section + div {
+  background-color: orange;
 }
