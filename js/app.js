@@ -27,7 +27,6 @@ function Product(name, fileExtension = 'jpg') {
 // Global Funtion
 
 function selectRandomProduct() {
-  // generate a 3 unique product images
   const indexes = new Set();
   while(indexes.size < 3 ) {
     const randomIndex =  Math.floor(Math.random() * productArr.length);
@@ -52,7 +51,7 @@ function renderProducts(left, middle, right) {
   productArr[left].timesShown++;
   productArr[middle].timesShown++;
   productArr[right].timesShown++;
-  console.log();
+
 }
 function handleProductClick(event) {
   console.log('click');
@@ -71,6 +70,8 @@ function handleProductClick(event) {
     productSelection.removeEventListener('click', handleProductClick);
     button.addEventListener('click', renderResults);
     button.className = 'clicks-allowed';
+    storeProductArr();
+    console.log('productArr', productArr);
   } else {
     selectRandomProduct();
   }
@@ -97,8 +98,8 @@ function renderChart() {
 
   for (let i = 0; i < productArr.length; i++) {
     productNames.push(productArr[i].name);
-    productTimesShown.push(productArr[i].votes);
-    productVotes.push(productArr[i].timesShown);
+    productTimesShown.push(productArr[i].timesShown);
+    productVotes.push(productArr[i].votes);
   }
   console.log(productNames);
   const ctx = document.getElementById('myChart');
@@ -133,6 +134,19 @@ function renderChart() {
   };
 
   new Chart(ctx, config);
+}
+
+function storeProductArr() {
+  let stringProduct = JSON.stringify(productArr);
+  localStorage.setItem('productArr', stringProduct);
+}
+
+function getProduct() {
+  let potentialProduct = localStorage.getItem('productArr');
+  if (potentialProduct) {
+    let parsedProduct = JSON.parse(potentialProduct);
+    productArr = parsedProduct;
+  }
 }
 
 
@@ -177,8 +191,9 @@ productArr.push(bag,
   unicorn,
   waterCan,
   wineGlass);
-console.log(productArr);
 
 selectRandomProduct();
+
+getProduct();
 
 productSelection.addEventListener('click', handleProductClick);
