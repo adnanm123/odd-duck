@@ -192,6 +192,7 @@ productArr.push(bag,
   waterCan,
   wineGlass);
 
+
 selectRandomProduct();
 
 getProduct();
