@@ -11,7 +11,7 @@ let resultsContainer = document.getElementById('results-container');
 
 
 
-let maxNumberOfRounds = 5;
+let maxNumberOfRounds = 25;
 let currentRoundNumber = 0;
 let productArr = [];
 
