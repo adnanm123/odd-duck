@@ -1,22 +1,20 @@
 'use strict';
 
-console.log('hey');
-
+// HTML element references
 let productSelection = document.getElementById('product-selection');
 let leftImage = document.getElementById('product1');
 let middleImage = document.getElementById('product2');
 let rightImage = document.getElementById('product3');
 let button = document.getElementById('results-button');
 let resultsContainer = document.getElementById('results-container');
-// let Chart = document.getElementById('myChart');
 let previousIndexes = [];
 
+// Configuration variables
 let maxNumberOfRounds = 25;
 let currentRoundNumber = 0;
 let productArr = [];
 
 // Constructor function for products
-
 function Product(name, fileExtension = 'jpg') {
   this.name = name;
   this.fileExtension = `img/${name}.${fileExtension}`;
@@ -24,8 +22,7 @@ function Product(name, fileExtension = 'jpg') {
   this.votes = 0;
 }
 
-// Global Funtion
-
+// Global Function: Selects random products to display
 function selectRandomProduct() {
   const indexes = new Set();
   while(indexes.size < 3 ) {
@@ -41,6 +38,7 @@ function selectRandomProduct() {
   console.log(uniqueIndexes);
 }
 
+// Renders the products on the page
 function renderProducts(left, middle, right) {
   leftImage.alt = productArr[left].name;
   middleImage.alt = productArr[middle].name;
@@ -53,6 +51,8 @@ function renderProducts(left, middle, right) {
   productArr[right].timesShown++;
 
 }
+
+// Handles the click event on the product images
 function handleProductClick(event) {
   console.log('click');
   currentRoundNumber++;
@@ -82,6 +82,7 @@ function renderResults() {
   renderChart();
 }
 
+// Renders the results list
 function renderList() {
   resultsContainer.innerHTML = '';
   for (let i = 0; i < productArr.length; i++) {
@@ -91,6 +92,7 @@ function renderList() {
   }
 }
 
+// Renders the chart
 function renderChart() {
   let productNames = [];
   let productTimesShown = [];
@@ -136,11 +138,13 @@ function renderChart() {
   new Chart(ctx, config);
 }
 
+// Stores the productArr in local storage
 function storeProductArr() {
   let stringProduct = JSON.stringify(productArr);
   localStorage.setItem('productArr', stringProduct);
 }
 
+// Retrieves the productArr from local storage
 function getProduct() {
   let potentialProduct = localStorage.getItem('productArr');
   if (potentialProduct) {
@@ -149,9 +153,7 @@ function getProduct() {
   }
 }
 
-
 // EXECUTABLE CODE
-
 let bag = new Product('bag');
 let banana = new Product('banana');
 let bathroom = new Product('bathroom');
@@ -172,6 +174,7 @@ let unicorn = new Product('unicorn');
 let waterCan = new Product('water-can');
 let wineGlass = new Product('wine-glass');
 
+// Add products to the productArr
 productArr.push(bag,
   banana,
   bathroom,
@@ -192,9 +195,7 @@ productArr.push(bag,
   waterCan,
   wineGlass);
 
-
+// Initial setup
 selectRandomProduct();
-
 getProduct();
-
 productSelection.addEventListener('click', handleProductClick);
